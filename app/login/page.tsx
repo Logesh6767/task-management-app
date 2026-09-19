@@ -6,9 +6,6 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { CheckSquare, Eye, EyeOff, Loader2, Zap } from 'lucide-react';
 
-const DEMO_EMAIL = 'demo@taskflow.com';
-const DEMO_PASSWORD = 'demo1234';
-
 export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -20,25 +17,16 @@ export default function LoginPage() {
   const [demoLoading, setDemoLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const signIn = async (e_or_email: React.FormEvent | string, pwd?: string) => {
-    const isDemo = typeof e_or_email === 'string';
-    if (!isDemo) e_or_email.preventDefault();
-
-    isDemo ? setDemoLoading(true) : setLoading(true);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
     setError('');
 
-    const loginEmail = isDemo ? e_or_email : email;
-    const loginPass = isDemo ? pwd! : password;
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: loginEmail,
-      password: loginPass,
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       setError(error.message);
       setLoading(false);
-      setDemoLoading(false);
     } else {
       router.push('/dashboard');
       router.refresh();
@@ -46,40 +34,15 @@ export default function LoginPage() {
   };
 
   const handleDemoLogin = async () => {
-    // Try signing in first; if the demo account doesn't exist, create it
     setDemoLoading(true);
     setError('');
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: DEMO_EMAIL,
-      password: DEMO_PASSWORD,
-    });
+    const { error } = await supabase.auth.signInAnonymously();
 
-    if (signInError) {
-      // Demo account doesn't exist yet — create it automatically
-      const { error: signUpError } = await supabase.auth.signUp({
-        email: DEMO_EMAIL,
-        password: DEMO_PASSWORD,
-        options: { data: { full_name: 'Demo User' } },
-      });
-
-      if (signUpError) {
-        setError('Demo login failed: ' + signUpError.message);
-        setDemoLoading(false);
-        return;
-      }
-
-      // Try signing in again after signup
-      const { error: retryError } = await supabase.auth.signInWithPassword({
-        email: DEMO_EMAIL,
-        password: DEMO_PASSWORD,
-      });
-
-      if (retryError) {
-        setError('Demo account created — check your Supabase email confirmation settings.');
-        setDemoLoading(false);
-        return;
-      }
+    if (error) {
+      setError('Demo failed: ' + error.message);
+      setDemoLoading(false);
+      return;
     }
 
     router.push('/dashboard');
@@ -123,7 +86,7 @@ export default function LoginPage() {
             <div className="flex-1 h-px bg-gray-100" />
           </div>
 
-          <form onSubmit={signIn} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Email address
