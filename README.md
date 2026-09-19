@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📋 TaskFlow — Task Management Application
 
-## Getting Started
+> Built for the **Thiranex Online Internship** program
 
-First, run the development server:
+A modern, full-stack task management web application built with **Next.js 14** and **Supabase**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase)](https://supabase.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38BDF8?logo=tailwindcss)](https://tailwindcss.com/)
+
+## ✨ Features
+
+| Feature | Implementation |
+|---|---|
+| 🔐 User Authentication | Supabase Auth (email + password) |
+| ✅ Task CRUD | Next.js API Routes + Supabase DB |
+| 🔴 Real-time Updates | Supabase Realtime (WebSockets) |
+| 📱 Responsive Design | Tailwind CSS (mobile-first) |
+| 🛡️ Route Protection | Next.js Middleware + JWT |
+| 🔒 Row-Level Security | Supabase RLS policies |
+| 🏷️ Tags & Priorities | Full metadata per task |
+| 📊 Kanban Board | Todo → In Progress → Done |
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14 (App Router, TypeScript)
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **Real-time**: Supabase Realtime (WebSockets)
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+
+## 📁 Project Structure
+
+```
+task-management-app/
+├── app/
+│   ├── api/tasks/          # REST API routes (backend)
+│   │   ├── route.ts        # GET (list) + POST (create)
+│   │   └── [id]/route.ts   # GET + PUT (update) + DELETE
+│   ├── dashboard/page.tsx  # Main dashboard with real-time
+│   ├── login/page.tsx      # Authentication
+│   ├── signup/page.tsx     # Registration
+│   └── layout.tsx
+├── components/
+│   ├── Navbar.tsx          # Top nav with search
+│   ├── StatsCards.tsx      # Task statistics
+│   ├── TaskBoard.tsx       # Kanban columns
+│   ├── TaskCard.tsx        # Individual task card
+│   └── TaskModal.tsx       # Create / Edit modal
+├── lib/
+│   ├── supabase/
+│   │   ├── client.ts       # Browser Supabase client
+│   │   └── server.ts       # Server Supabase client
+│   └── utils.ts            # Helper functions
+├── types/index.ts           # TypeScript types
+├── middleware.ts            # Route protection
+└── supabase/schema.sql      # Database schema
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js >= 18
+- A free [Supabase](https://supabase.com) account
 
-## Learn More
+### 1. Clone the repo
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+git clone https://github.com/YOUR_USERNAME/task-management-app.git
+cd task-management-app
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Set up Supabase
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** and run the contents of [`supabase/schema.sql`](./supabase/schema.sql)
+3. Go to **Settings → API** and copy your `URL` and `anon` key
 
-## Deploy on Vercel
+### 3. Configure environment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+cp .env.example .env.local
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Edit `.env.local`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+### 4. Install & run
+
+```bash
+npm install
+npm run dev
+```
+
+Visit **http://localhost:3000** 🚀
+
+## 🌐 Deployment (Vercel)
+
+1. Push to GitHub
+2. Import project in [Vercel](https://vercel.com)
+3. Add environment variables: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy!
+
+## 📄 API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/tasks` | List all tasks (supports `?status=`, `?priority=`, `?search=`) |
+| `POST` | `/api/tasks` | Create a new task |
+| `GET` | `/api/tasks/:id` | Get a single task |
+| `PUT` | `/api/tasks/:id` | Update a task |
+| `DELETE` | `/api/tasks/:id` | Delete a task |
+
+## 📄 License
+
+MIT — Built as part of the Thiranex Internship Program.
