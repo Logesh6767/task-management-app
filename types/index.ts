@@ -37,3 +37,4 @@ export interface TaskStats {
   in_progress: number;
   done: number;
 }
+

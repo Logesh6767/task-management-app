@@ -115,3 +115,4 @@ create trigger tasks_updated_at
 -- ENABLE REALTIME for tasks table
 -- ============================================================
 alter publication supabase_realtime add table public.tasks;
+

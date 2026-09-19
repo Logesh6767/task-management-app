@@ -139,3 +139,4 @@ export default function TaskCard({ task, onEdit, onDelete, onStatusChange }: Tas
     </div>
   );
 }
+

@@ -49,3 +49,4 @@ export const PRIORITY_DOT: Record<TaskPriority, string> = {
   medium: 'bg-yellow-400',
   high: 'bg-red-500',
 };
+

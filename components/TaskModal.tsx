@@ -213,3 +213,4 @@ export default function TaskModal({ task, onClose, onSubmit }: TaskModalProps) {
     </div>
   );
 }
+

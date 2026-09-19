@@ -84,3 +84,4 @@ export default function Navbar({ searchQuery, setSearchQuery }: NavbarProps) {
     </header>
   );
 }
+
